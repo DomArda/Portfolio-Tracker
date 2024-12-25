@@ -18,7 +18,26 @@ class Portfolio:
         """
         for key, value in data.items():
             if hasattr(cls, key):
+                if value is None: value = 0
+
                 setattr(cls, key, value)
+
+    @staticmethod
+    def percentage_change(initial_value : float, final_value : float) -> float:
+        """
+        Return the percentage change between initial_value and final_value.
+
+        Args:
+            initial_value (float): Initial value.
+            final_value (float): Final value.
+
+        Return:
+            float: Percentage change, zero if attempting to divide by zero.
+        """
+
+        if initial_value == 0: return 0
+
+        return (final_value - initial_value) / initial_value * 100
 
     class Cash:
         """
@@ -31,6 +50,8 @@ class Portfolio:
             - profit_and_loss (float): Unrealized net cash after investments.
             - result (float): Realized net cash after investments.
             - total (float): Total cash counts.
+            - dividend_total (float): Total of dividend payment.
+            - currency_code (str): Account's currency code.
         """
         free = 0
         blocked = 0
@@ -38,6 +59,8 @@ class Portfolio:
         profit_and_loss = 0
         result = 0
         total = 0
+        dividend_total = 0
+        currency_code = "$"
 
     class Stock:
         """Interface for stock ownership of a portfolio."""
