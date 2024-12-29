@@ -17,16 +17,34 @@ _local_dir = os.path.join(_cur_dir, "local")
 # such as the user providing a CSV file because we don't support a broker.
 _csv_dir = os.path.join(_cur_dir, "csv-storage")
 
-_ini_file_dir = os.path.join(_local_dir, "keys.ini")
-_json_file_dir = os.path.join(_local_dir, "portfolio.json")
-
-_ini_parser = configparser.ConfigParser()
-
 class Config:
     """Abstract interface for handling configuration files."""
 
+    @staticmethod
+    def init():
+        """
+        Creates the folder structure.
+
+        Doesn't care if the folder already exists.
+        """
+        os.makedirs(_local_dir, exist_ok=True)
+
+
     class Ini:
         """Abstract interface for handling .ini files."""
+        _ini_file_dir = os.path.join(_local_dir, "keys.ini")
+        ConfigParser = configparser.ConfigParser()
+
+        def __init__(self):
+            Config.init()
+
+            if os.path.exists(self._ini_file_dir):
+                # .ini file exists
+                self.ConfigParser.read(self._ini_file_dir)
+
+            else:
+                # no .ini file
+                open(self._ini_file_dir, "x")
 
     class Json:
         """Abstract interface for handling .json files."""
