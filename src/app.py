@@ -1,4 +1,5 @@
 import streamlit
+from config import Config
 
 # Streamlit entry point
 
@@ -6,10 +7,12 @@ import streamlit
 if "logged_in" not in streamlit.session_state:
     # This basically means whether the User has supplied API keys already.
     streamlit.session_state.logged_in = False
+if "ini" not in streamlit.session_state:
+    streamlit.session_state.ini = Config.Ini()
 
 # Pages
-login_page = streamlit.Page("pages/page_login.py", title="API Keys.", default=True)
-dashboard_page = streamlit.Page("pages/page_dashboard.py", title="Dashboard")
+login_page = streamlit.Page("pages/page_login.py", title="🔑 API Keys", default=True)
+dashboard_page = streamlit.Page("pages/page_dashboard.py", title="📈 Dashboard")
 
 # Login Logic
 if streamlit.session_state.logged_in:

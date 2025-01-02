@@ -1,15 +1,37 @@
 import streamlit
 
+# Streamlit Page for Inputting API Keys, Private Keys, etc.
+
+_Ini = streamlit.session_state.ini
+
 streamlit.title("Login Page")
 
-api_key_input = streamlit.text_input("Input Trading212 API Key")
+platform_select, api_key_input = streamlit.columns(2)
+with platform_select:
+    platform_option = streamlit.selectbox(
+        "Select Broker / Exchange Platform",
+        {"Trading212"},
+        index=None,
+    )
 
-if streamlit.button("Submit"):
-    if api_key_input:
-        # streamlit.session_state.logged_in
+with api_key_input:
+    if platform_option:
+        input_API_key = streamlit.text_input(
+            label="API Key",
+            value=_Ini.get(platform_option)
+        )
 
-        streamlit.session_state.logged_in = True
-        streamlit.rerun()
+        if streamlit.button("Submit"):
+            # streamlit.session_state.logged_in
+            _Ini.set(platform_option, input_API_key)
+            _Ini.write()
 
-    else:
-        streamlit.error("No API Key provided")
+            streamlit.session_state.logged_in = True
+
+            streamlit.rerun()
+
+            # TODO
+            # 1. Validate Key
+            # 3. Generate a Portfolio
+
+
