@@ -33,5 +33,6 @@ with api_key_input:
             # TODO
             # 1. Validate Key
             # 3. Generate a Portfolio
+            # 4. Save to Config's Json
 
 
