@@ -126,9 +126,13 @@ class Config:
 
     class Json:
         """Abstract interface for handling .json files."""
+        _json_file_dir = os.path.join(_local_dir, "portfolios.json")
 
         def __init__(self):
             Config._init()
+
+            if not os.path.exists(self._json_file_dir):
+                open(self._json_file_dir, "x")
 
     class Csv:
         """Abstract interface for handling .csv files."""
