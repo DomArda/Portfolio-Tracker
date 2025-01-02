@@ -1,12 +1,27 @@
 import streamlit
-import portfolio_gen
 
-streamlit.title("Dashboard")
-streamlit.divider()
+# Streamlit entry point
 
-streamlit.header("**Portfolio Value**")
-streamlit.header("£6026.42")
-streamlit.divider()
+# Session state
+if "logged_in" not in streamlit.session_state:
+    # This basically means whether the User has supplied API keys already.
+    streamlit.session_state.logged_in = False
 
-streamlit.metric(label="Free Funds", value="£602.30", delta="£4.2 in Dividends", delta_color="off")
-streamlit.metric(label="Invested", value="£4232", delta="+42.4%")
+# Pages
+login_page = streamlit.Page("pages/page_login.py", title="API Keys.", default=True)
+dashboard_page = streamlit.Page("pages/page_dashboard.py", title="Dashboard")
+
+# Login Logic
+if streamlit.session_state.logged_in:
+    page = streamlit.navigation(
+        {
+            "Settings" : [login_page],
+            "Account" : [dashboard_page],
+        }
+    )
+
+else:
+    # Has not supplied any API Keys
+    page = streamlit.navigation([login_page])
+
+page.run()
